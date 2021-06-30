@@ -13,7 +13,11 @@
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
 <<<<<<< HEAD
+<<<<<<< HEAD
 .DS_Store
+=======
+
+>>>>>>> 5cfa96a56f101351e537e0f42975497f7002cbed
 =======
 
 >>>>>>> 5cfa96a56f101351e537e0f42975497f7002cbed
@@ -28,7 +32,10 @@ mono_crash.*
 x64/
 x86/
 <<<<<<< HEAD
+<<<<<<< HEAD
 [Ww][Ii][Nn]32/
+=======
+>>>>>>> 5cfa96a56f101351e537e0f42975497f7002cbed
 =======
 >>>>>>> 5cfa96a56f101351e537e0f42975497f7002cbed
 [Aa][Rr][Mm]/
@@ -70,9 +77,12 @@ project.fragment.lock.json
 artifacts/
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 # ASP.NET Scaffolding
 ScaffoldingReadMe.txt
 
+=======
+>>>>>>> 5cfa96a56f101351e537e0f42975497f7002cbed
 =======
 >>>>>>> 5cfa96a56f101351e537e0f42975497f7002cbed
 # StyleCop
@@ -101,7 +111,10 @@ StyleCopReport.xml
 *_wpftmp.csproj
 *.log
 <<<<<<< HEAD
+<<<<<<< HEAD
 *.tlog
+=======
+>>>>>>> 5cfa96a56f101351e537e0f42975497f7002cbed
 =======
 >>>>>>> 5cfa96a56f101351e537e0f42975497f7002cbed
 *.vspscc
@@ -156,11 +169,14 @@ _TeamCity*
 !.axoCover/settings.json
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 # Coverlet is a free, cross platform Code Coverage Tool
 coverage*.json
 coverage*.xml
 coverage*.info
 
+=======
+>>>>>>> 5cfa96a56f101351e537e0f42975497f7002cbed
 =======
 >>>>>>> 5cfa96a56f101351e537e0f42975497f7002cbed
 # Visual Studio code coverage results
@@ -223,9 +239,12 @@ PublishScripts/
 *.nuget.targets
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 # Nuget personal access tokens and Credentials
 nuget.config
 
+=======
+>>>>>>> 5cfa96a56f101351e537e0f42975497f7002cbed
 =======
 >>>>>>> 5cfa96a56f101351e537e0f42975497f7002cbed
 # Microsoft Azure Build Output
@@ -381,6 +400,7 @@ MigrationBackup/
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
@@ -407,5 +427,7 @@ FodyWeavers.xsd
 # JetBrains Rider
 .idea/
 *.sln.iml
+=======
+>>>>>>> 5cfa96a56f101351e537e0f42975497f7002cbed
 =======
 >>>>>>> 5cfa96a56f101351e537e0f42975497f7002cbed
