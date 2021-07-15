@@ -13,7 +13,7 @@
             <th>
                 <button class="btn btn-outline-primary"
                 (click)="alternarImagem()">
-                    Mostrar Imagem
+                <i class="{{mostrarImagem ? 'fa fa-eye-slash' : 'fa fa-eye'}}"></i>
                 </button>
             </th>
             <th>#</th>
@@ -29,16 +29,23 @@
         <tr *ngFor="let evento of eventosFiltrados">
             <td>
                 <img *ngIf="mostrarImagem"
-                src="http://localhost:5000/img/{{evento.imagemUrl}}"
+                src="http://localhost:5000/img/{{evento.imagemURL}}"
                 [style.width.px]="imagemLargura"
                 [style.margin.px]="imagemMargem"/>
             </td>
-            <td>{{evento.eventoId}}</td>
+            <td>{{evento.Id}}</td>
             <td>{{evento.tema}}</td>
             <td>{{evento.local}}</td>
             <td>{{evento.dataEvento}}</td>
             <td>{{evento.qtdPessoas}}</td>
-            <td>{{evento.lote | uppercase}}</td>
+            <td>
+                <div *ngIf="!evento.lotes.length">
+                Não informado
+                </div>
+                <div *ngIf="evento.lotes.length">
+                {{evento.lotes[0].nome | uppercase}}
+                </div>
+            </td>
             <td>
                 <button class="btn btn-success"></button>
                 <button class="btn btn-danger"></button>
