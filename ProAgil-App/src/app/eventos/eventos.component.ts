@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, TemplateRef } from '@angular/core';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { Evento } from '../_models/Evento';
 import { EventoService } from '../_services/evento.service';
 
@@ -9,7 +10,24 @@ import { EventoService } from '../_services/evento.service';
 })
 export class EventosComponent implements OnInit {
 
+  eventosFiltrados: Evento[] = [];
+  eventos: Evento[] = [];
+  imagemLargura = 50;
+  imagemMargem = 2;
+  mostrarImagem = false;
+  modalRef: BsModalRef | any;
+
   _filtroLista = '';
+
+  constructor(
+    private eventoService: EventoService
+   , private modalService: BsModalService
+    ) {}
+
+  ngOnInit() {
+    this.getEventos();
+  }
+
   get filtroLista(): string {
     return this._filtroLista;
   }
@@ -18,16 +36,8 @@ export class EventosComponent implements OnInit {
     this.eventosFiltrados = this.filtroLista ? this.filtrarEventos(this.filtroLista) : this.eventos; 
   }
 
-  eventosFiltrados: Evento[] = [];
-  eventos: Evento[] = [];
-  imagemLargura = 50;
-  imagemMargem = 2;
-  mostrarImagem = false;
-
-  constructor(private eventoService: EventoService ) {}
-
-  ngOnInit() {
-    this.getEventos();
+  openModal(template: TemplateRef<any>){
+    this.modalRef = this.modalService.show(template);
   }
 
   filtrarEventos(filtrarPor: string): Evento[] {
@@ -46,7 +56,7 @@ export class EventosComponent implements OnInit {
       (_eventos: Evento[]) => {
       this.eventos = _eventos;
       this.eventosFiltrados = this.eventos;
-      console.log(_eventos)
+      console.log(this.eventos)
     }, error => {
       console.log(error);
     });
