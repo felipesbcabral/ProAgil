@@ -24,7 +24,7 @@ export class EventosComponent implements OnInit {
   mostrarImagem = false;
   registerForm: FormGroup | any;
   bodyDeletarEvento = '';
-
+  
   _filtroLista: string = '';
   
   constructor(
@@ -52,7 +52,7 @@ export class EventosComponent implements OnInit {
     editarEvento(evento: Evento, template: any) {
       this.modoSalvar = 'put';
       this.openModal(template);
-      this.evento = evento;
+      this.evento = Object.assign({}, evento);
       this.registerForm.patchValue(evento)
     }
     
@@ -60,101 +60,88 @@ export class EventosComponent implements OnInit {
       this.modoSalvar = 'post';
       this.openModal(template);
     }
-
+  
+    
     excluirEvento(evento: Evento, template: any) {
       this.openModal(template);
       this.evento = evento;
       this.bodyDeletarEvento = `Tem certeza que deseja excluir o Evento: ${evento.tema}, Código: ${evento.id}`;
     }
-
+    
     confirmeDelete(template: any) {
       this.eventoService.deleteEvento(this.evento.id).subscribe(
         () => {
-            template.hide();
-            this.getEventos();
-          }, error => {
-            console.log(error);
-          }
-      );
-    }
-    
-    
-    openModal(template: any){
-      this.registerForm.reset();
-      template.show();
-    }
-    
-    filtrarEventos(filtrarPor: string): Evento[] {
-      filtrarPor = filtrarPor.toLocaleLowerCase();
-      return this.eventos.filter(
-        (evento: any) => evento.tema.toLocaleLowerCase().indexOf(filtrarPor) !== -1
+          template.hide();
+          this.getEventos();
+        }, error => {
+          console.log(error);
+        }
         );
       }
       
-      alternarImagem(){
-        this.mostrarImagem = !this.mostrarImagem;
+      
+      openModal(template: any){
+        this.registerForm.reset();
+        template.show();
       }
       
-      validation() {
-        this.registerForm = this.fb.group({
-          tema: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(50)]],
-          local: ['', Validators.required],
-          dataEvento: ['', Validators.required],
-          imagemURL: ['', Validators.required],
-          qtdPessoas: ['', [Validators.required, Validators.max(120000)]],
-          telefone: ['', Validators.required],
-          email: ['', [Validators.required, Validators.email,]]
-        });
-      }
-      
-      salvarAlteracao(template: any){
-        if(this.registerForm.valid){
+      filtrarEventos(filtrarPor: string): Evento[] {
+        filtrarPor = filtrarPor.toLocaleLowerCase();
+        return this.eventos.filter(
+          (evento: any) => evento.tema.toLocaleLowerCase().indexOf(filtrarPor) !== -1
+          );
+        }
+        
+        alternarImagem(){
+          this.mostrarImagem = !this.mostrarImagem;
+        }
+        
+        validation() {
+          this.registerForm = this.fb.group({
+            tema: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(50)]],
+            local: ['', Validators.required],
+            dataEvento: ['', Validators.required],
+            imagemURL: ['', Validators.required],
+            qtdPessoas: ['', [Validators.required, Validators.max(120000)]],
+            telefone: ['', Validators.required],
+            email: ['', [Validators.required, Validators.email,]]
+          });
+        }
+        
+        salvarAlteracao(template: any) {
+          if(!this.registerForm.valid) return;
+            
           if (this.modoSalvar === 'post') {
             this.evento = Object.assign({}, this.registerForm.value);
-            this.eventoService.postEvento(this.evento).subscribe(
+            this.eventoService.postEvento(this.evento)
+              .subscribe(novoEvento => {
+                console.log(novoEvento);
+                template.hide();
+                this.getEventos();
+              }, error => console.log(error)
+            );
+          } else {
+            console.log('Evento: ', this.evento);
+            this.evento = Object.assign({id: this.evento.id}, this.registerForm.value);
+            console.log('Evento depois: ', this.evento);
+
+            this.eventoService.putEvento(this.evento).subscribe(
               novoEvento => {
                 console.log(novoEvento);
                 template.hide();
                 this.getEventos();
-              }, error => {
-                console.log(error);
-              }
-              );
-            } else {
-              this.evento = Object.assign({id: this.evento.id}, this.registerForm.value);
-              this.eventoService.putEvento(this.evento).subscribe(
-                novoEvento => {
-                  console.log(novoEvento);
-                  template.hide();
-                  this.getEventos();
-                }, error => {
-                  console.log(error);
-                }
-                );
-              }
-              this.evento = Object.assign({}, this.registerForm.value);
-              this.eventoService.postEvento(this.evento).subscribe(
-                novoEvento => {
-                  console.log(novoEvento);
-                  template.hide();
-                  this.getEventos();
-                }, error => {
-                  console.log(error);
-                }
-                );
-              }
-            }
-            
-            
-            getEventos() {
-              this.eventoService.getAllEvento().subscribe(
-                (_eventos: Evento[]) => {
-                  this.eventos = _eventos;
-                  this.eventosFiltrados = this.eventos;
-                  console.log(this.eventos)
-                }, error => {
-                  console.log(error);
-                });
-              }
-            }
-            
+              }, error => console.log(error)
+            );
+          }
+        }
+              
+        getEventos() {
+          this.eventoService.getAllEvento()
+            .subscribe((_eventos: Evento[]) => {
+              this.eventos = _eventos;
+              this.eventosFiltrados = this.eventos;
+              console.log(this.eventos)
+            }, error => console.log(error));
+        } 
+}
+        

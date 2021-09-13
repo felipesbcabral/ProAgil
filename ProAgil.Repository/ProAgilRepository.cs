@@ -11,7 +11,7 @@ namespace ProAgil.Repository
         public ProAgilRepository(ProAgilContext context)
         {
             _context = context;
-            _context.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
+            // _context.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
         }
 
         //GERAIS
@@ -69,7 +69,7 @@ namespace ProAgil.Repository
             }
 
             query = query.AsNoTracking()
-                        .OrderByDescending(c => c.DataEvento)
+                        .OrderBy(c => c.Id)
                         .Where(c => c.Tema.ToLower().Contains(tema.ToLower()));
 
             return await query.ToArrayAsync();

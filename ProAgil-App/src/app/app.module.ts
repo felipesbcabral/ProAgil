@@ -9,11 +9,12 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 
 import { EventoService } from './_services/evento.service';
+import { FormsModule }   from '@angular/forms';
 
 import { AppComponent } from './app.component';
 import { EventosComponent } from './eventos/eventos.component';
 import { NavComponent } from './nav/nav.component';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 
 import { DateTimeFormat } from './_helps/DateTimeFormat.pipe';
 
@@ -26,6 +27,7 @@ import { DateTimeFormat } from './_helps/DateTimeFormat.pipe';
       DateTimeFormat,
    ],
   imports: [
+    FormsModule,
     BrowserAnimationsModule,
     BrowserModule,
     BsDropdownModule.forRoot(),
@@ -33,7 +35,6 @@ import { DateTimeFormat } from './_helps/DateTimeFormat.pipe';
     ModalModule.forRoot(),
     AppRoutingModule,
     HttpClientModule,
-    FormsModule,
     ReactiveFormsModule,
     BsDatepickerModule.forRoot()
   ],
