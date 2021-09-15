@@ -5,8 +5,10 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { AppRoutingModule } from './app-routing.module';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
+import { ToastrModule } from 'ngx-toastr';
 
 import { EventoService } from './_services/evento.service';
 import { FormsModule }   from '@angular/forms';
@@ -33,6 +35,12 @@ import { DateTimeFormat } from './_helps/DateTimeFormat.pipe';
     BsDropdownModule.forRoot(),
     TooltipModule.forRoot(),
     ModalModule.forRoot(),
+    BrowserAnimationsModule,
+    ToastrModule.forRoot({
+      timeOut: 10000,
+      positionClass: 'toast-bottom-right',
+      preventDuplicates: true,
+    }),
     AppRoutingModule,
     HttpClientModule,
     ReactiveFormsModule,
