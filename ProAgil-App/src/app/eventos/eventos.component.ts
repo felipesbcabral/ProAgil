@@ -16,6 +16,8 @@ defineLocale('pt-br', ptBrLocale);
 })
 export class EventosComponent implements OnInit {
   
+  titulo = 'Eventos';
+
   eventosFiltrados: Evento[] = [];
   eventos:  Evento[] = [];
   modoSalvar = 'post';

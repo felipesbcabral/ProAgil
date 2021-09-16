@@ -1,3 +1,4 @@
+<app-titulo [titulo]="titulo"></app-titulo>
 <div>
 <div class="d-flex">
   <div class="form-inline mr-auto">
@@ -123,6 +124,8 @@ role="dialog" aria-labelledby="dialog-sizes-name1">
           <label>Data e Hora</label>
           <input type="text" class="form-control"
           bsDatepicker
+          value="{{dataEvento | DateTimeFormatPipe}}"
+          [(ngModel)]="dataEvento"
           [bsConfig]="{ dateInputFormat : 'DD/MM/YYYY hh:mm:a' }"
           [ngClass]="{'is-invalid': registerForm.get('dataEvento')!.errors && registerForm.get('dataEvento')!.touched}"
           type="text" class="form-control" formControlName="dataEvento" placeholder="Insira a data">

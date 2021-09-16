@@ -41,17 +41,17 @@ namespace ProAgil.Repository
         {
             IQueryable<Evento> query = _context.Eventos
                 .Include(c => c.Lotes)
-                .Include(c => c.RedesSociais);
+                .Include(c => c.RedesSociais).AsSplitQuery();
 
             if (includePalestrantes)
             {
                 query = query
                     .Include(pe => pe.PalestrantesEventos)
-                    .ThenInclude(p => p.Palestrante);
+                    .ThenInclude(p => p.Palestrante).AsSplitQuery();
             }
 
             query = query.AsNoTracking()
-                        .OrderBy(c => c.Id);
+                        .OrderBy(c => c.Id).AsSplitQuery();
 
             return await query.ToArrayAsync();
         }
@@ -59,18 +59,18 @@ namespace ProAgil.Repository
         {
             IQueryable<Evento> query = _context.Eventos
                 .Include(c => c.Lotes)
-                .Include(c => c.RedesSociais);
+                .Include(c => c.RedesSociais).AsSplitQuery();
 
             if (includePalestrantes)
             {
                 query = query
                     .Include(pe => pe.PalestrantesEventos)
-                    .ThenInclude(p => p.Palestrante);
+                    .ThenInclude(p => p.Palestrante).AsSplitQuery();
             }
 
             query = query.AsNoTracking()
                         .OrderBy(c => c.Id)
-                        .Where(c => c.Tema.ToLower().Contains(tema.ToLower()));
+                        .Where(c => c.Tema.ToLower().Contains(tema.ToLower())).AsSplitQuery();
 
             return await query.ToArrayAsync();
         }
@@ -78,19 +78,19 @@ namespace ProAgil.Repository
         {
             IQueryable<Evento> query = _context.Eventos
                 .Include(c => c.Lotes)
-                .Include(c => c.RedesSociais);
+                .Include(c => c.RedesSociais).AsSplitQuery();
 
             if (includePalestrantes)
             {
                 query = query
                     .Include(pe => pe.PalestrantesEventos)
-                    .ThenInclude(p => p.Palestrante);
+                    .ThenInclude(p => p.Palestrante).AsSplitQuery();
             }
 
             query = query
                         .AsNoTracking()
                         .OrderBy(c => c.Id)
-                        .Where(c => c.Id == EventoId);
+                        .Where(c => c.Id == EventoId).AsSplitQuery();
 
             return await query.FirstOrDefaultAsync();
         }
@@ -99,35 +99,35 @@ namespace ProAgil.Repository
         public async Task<Palestrante> GetPalestranteAsync(int PalestranteId, bool includeEventos = false)
         {
             IQueryable<Palestrante> query = _context.Palestrantes
-                .Include(c => c.RedesSociais);
+                .Include(c => c.RedesSociais).AsSplitQuery();
 
             if (includeEventos)
             {
                 query = query
                     .Include(pe => pe.PalestrantesEventos)
-                    .ThenInclude(e => e.Evento);
+                    .ThenInclude(e => e.Evento).AsSplitQuery();
             }
 
             query = query.AsNoTracking()
                     .OrderBy(p => p.Nome)
-                    .Where(p => p.Id == PalestranteId);
+                    .Where(p => p.Id == PalestranteId).AsSplitQuery();
 
             return await query.FirstOrDefaultAsync();
         }
         public async Task<Palestrante[]> GetAllPalestrantesAsyncByName(string name, bool includeEventos = false)
         {
             IQueryable<Palestrante> query = _context.Palestrantes
-                .Include(c => c.RedesSociais);
+                .Include(c => c.RedesSociais).AsSplitQuery();
 
             if (includeEventos)
             {
                 query = query
                     .Include(pe => pe.PalestrantesEventos)
-                    .ThenInclude(e => e.Evento);
+                    .ThenInclude(e => e.Evento).AsSplitQuery();
             }
 
             query = query.AsNoTracking()
-                        .Where(p => p.Nome.ToLower().Contains(name.ToLower()));
+                        .Where(p => p.Nome.ToLower().Contains(name.ToLower())).AsSplitQuery();
 
             return await query.ToArrayAsync();
         }
