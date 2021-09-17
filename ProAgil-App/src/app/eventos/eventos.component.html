@@ -1,74 +1,74 @@
 <app-titulo [titulo]="titulo"></app-titulo>
 <div>
-<div class="d-flex">
-  <div class="form-inline mr-auto">
-    <div class="form-group mb-2">
-      <label class="mr-2">Filtro:</label> <input type="text" 
-      class="form-control mr-2" 
-      placeholder="buscar"
-      [(ngModel)]="filtroLista">
+  <div class="d-flex">
+    <div class="form-inline mr-auto">
+      <div class="form-group mb-2">
+        <label class="mr-2">Filtro:</label> <input type="text" 
+        class="form-control mr-2" 
+        placeholder="buscar"
+        [(ngModel)]="filtroLista">
+      </div>
     </div>
-  </div>
-  <div>
-    <button class="btn btn-outline-primary" (click)="novoEvento(template)">
-      <i class="fa fa-plus circle"></i>&nbsp;
-      Novo evento
-    </button>
-  </div>
-  
-</div>
-<h3>Filtro: {{filtroLista}}</h3>
-<table class="table table-dark table-striped">
-  <thead>
-    <tr>
-      <th>
-        <button class="btn btn-outline-primary"
-        (click)="alternarImagem()">
-        <i class="{{mostrarImagem ? 'fa fa-eye-slash' : 'fa fa-eye'}}"></i>
+    <div>
+      <button class="btn btn-outline-primary" (click)="novoEvento(template)">
+        <i class="fa fa-plus circle"></i>&nbsp;
+        Novo evento
       </button>
-    </th>
-    <th>#</th>
-    <th>Tema</th>
-    <th>Local</th>
-    <th>Data</th>
-    <th>Qtd Pessoas</th>
-    <th>Lote</th>
-    <th>Opções</th>
+    </div>
+    
+  </div>
+  <h3>Filtro: {{filtroLista}}</h3>
+  <table class="table table-dark table-striped">
+    <thead>
+      <tr>
+        <th>
+          <button class="btn btn-outline-primary"
+          (click)="alternarImagem()">
+          <i class="{{mostrarImagem ? 'fa fa-eye-slash' : 'fa fa-eye'}}"></i>
+        </button>
+      </th>
+      <th>#</th>
+      <th>Tema</th>
+      <th>Local</th>
+      <th>Data</th>
+      <th>Qtd Pessoas</th>
+      <th>Lote</th>
+      <th>Opções</th>
+    </tr>
+  </thead>
+  <tbody *ngIf="eventos && eventos.length">
+    <tr *ngFor="let evento of eventosFiltrados">
+      <td>
+        <img *ngIf="mostrarImagem"
+        src="http://localhost:5000/resources/Images/{{evento.imagemURL}}"
+        [style.width.px]="imagemLargura"
+        [style.margin.px]="imagemMargem"/>
+      </td>
+      <td>{{evento.id}}</td>
+      <td>{{evento.tema}}</td>
+      <td>{{evento.local}}</td>
+      <td>{{evento.dataEvento | DateTimeFormatPipe}}</td>
+      <td>{{evento.qtdPessoas}}</td>
+      <td>
+        <div *ngIf="!evento.lotes.length">
+          {{"Não informado!" | uppercase}}
+        </div>
+        <div *ngIf="evento.lotes.length">
+          {{evento.lotes[0].nome | uppercase}}
+        </div>
+      </td>
+      <td>
+        <div class="btn-group">
+          <button class="btn btn-sm btn-success" 
+          tooltip="Editar" (click)="editarEvento(evento, template)">
+          <i class="fa fa-edit"></i>
+        </button>
+        <button class="btn btn-sm btn-danger" tooltip="Excluir" (click)="excluirEvento(evento, confirm)">
+          <i class="fa fa-eraser"></i>
+        </button>
+      </div>
+    </td>
   </tr>
-</thead>
-<tbody *ngIf="eventos && eventos.length">
-  <tr *ngFor="let evento of eventosFiltrados">
-    <td>
-      <img *ngIf="mostrarImagem"
-      src="http://localhost:5000/img/{{evento.imagemURL}}"
-      [style.width.px]="imagemLargura"
-      [style.margin.px]="imagemMargem"/>
-    </td>
-    <td>{{evento.id}}</td>
-    <td>{{evento.tema}}</td>
-    <td>{{evento.local}}</td>
-    <td>{{evento.dataEvento | DateTimeFormatPipe}}</td>
-    <td>{{evento.qtdPessoas}}</td>
-    <td>
-      <div *ngIf="!evento.lotes.length">
-        {{"Não informado!" | uppercase}}
-      </div>
-      <div *ngIf="evento.lotes.length">
-        {{evento.lotes[0].nome | uppercase}}
-      </div>
-    </td>
-    <td>
-      <div class="btn-group">
-        <button class="btn btn-sm btn-success" 
-        tooltip="Editar" (click)="editarEvento(evento, template)">
-        <i class="fa fa-edit"></i>
-      </button>
-      <button class="btn btn-sm btn-danger" tooltip="Excluir" (click)="excluirEvento(evento, confirm)">
-        <i class="fa fa-eraser"></i>
-      </button>
-  </div>
-</td>
-</tr>
 </tbody>
 <tfoot *ngIf="!eventos.length">
   <tr>
@@ -152,14 +152,23 @@ role="dialog" aria-labelledby="dialog-sizes-name1">
   </div>
   <div class="form-group col-md-9">
     <label>Imagem</label>
-    <input type="text" class="form-control"
-    [ngClass]="{'is-invalid': registerForm.get('imagemURL')!.errors && registerForm.get('imagemURL')!.touched}"
-    type="text" class="form-control" formControlName="imagemURL" placeholder="Insira a Imagem">
-    <div *ngIf="registerForm.get('imagemURL')?.hasError('required')
-    && registerForm.get('imagemURL')?.touched" class="invalid-feedback">
-    Imagem é obrigatório.
+    <table>
+      <tr>
+        <td>
+          <button class="btn btn-success" (click)="file.click()">
+            Enviar Imagem
+          </button>
+          <input type="file" #file [ngClass]="{'is-invalid': registerForm.get('imagemURL').errors 
+&& registerForm.get('imagemURL').touched}" (change)="onFileChange($event)" class="form-control is-invalid"
+            formControlName="imagemURL" placeholder="" style="display: none">
+        </td>
+      </tr>
+    </table>
+    <div *ngIf="registerForm.get('imagemURL').hasError('required')
+&& registerForm.get('imagemURL').touched" class="invalid-feedback">
+      Imagem é obrigatório.
+    </div>
   </div>
-</div>
 </div>  
 <div class="form-row">
   <div class="form-group col-md-4">
@@ -200,27 +209,27 @@ Deve ser um e-mail válido.
 </div>
 
 <div bsModal #confirm="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="dialog-sizes-name1">
-	<div class="modal-dialog modal-sm">
-  		<div class="modal-content">
-    		<div class="modal-header">
-      			<h4 class="modal-title pull-left">
-        			Deletando Evento
-      			</h4>
-      			<button type="button" class="close pull-right" (click)="confirm.hide()" aria-label="Close">
-        			<span aria-hidden="true">&times;</span>
-      			</button>
-    		</div>
-    		<div class="modal-body">
-      			<p>{{bodyDeletarEvento}}</p>
-    		</div>    
-    		<div class="modal-footer btn-group d-flex">      
-      			<button type="button" class="btn btn-outline-primary" (click)="confirm.hide()">
-        			CENCELAR
-      			</button>
-      			<button type="button" class="btn btn-outline-danger" (click)="confirmeDelete(confirm)">
-          			DELETAR
-        		</button>
-    		</div>
-  		</div>
-	</div>
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title pull-left">
+          Deletando Evento
+        </h4>
+        <button type="button" class="close pull-right" (click)="confirm.hide()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>{{bodyDeletarEvento}}</p>
+      </div>    
+      <div class="modal-footer btn-group d-flex">      
+        <button type="button" class="btn btn-outline-primary" (click)="confirm.hide()">
+          CENCELAR
+        </button>
+        <button type="button" class="btn btn-outline-danger" (click)="confirmeDelete(confirm)">
+          DELETAR
+        </button>
+      </div>
+    </div>
+  </div>
 </div>

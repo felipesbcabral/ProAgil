@@ -3,6 +3,12 @@
     <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
+    <Content Include="Resources\Images\img1.jpg" />
+    <Content Include="Resources\Images\img2.jpg" />
+    <Content Include="Resources\Images\img3.jpg" />
+    <Content Include="Resources\Images\img5.jpg" />
+  </ItemGroup>
+  <ItemGroup>
     <None Include="ProAgil.WebAPI.sln" />
   </ItemGroup>
   <ItemGroup>
@@ -17,5 +23,8 @@
   <ItemGroup>
     <ProjectReference Include="..\ProAgil.Domain\ProAgil.Domain.csproj" />
     <ProjectReference Include="..\ProAgil.Repository\ProAgil.Repository.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="wwwroot\img\" />
   </ItemGroup>
 </Project>

@@ -7,6 +7,7 @@ import { BsLocaleService } from 'ngx-bootstrap/datepicker';
 import { defineLocale } from 'ngx-bootstrap/chronos';
 import { ptBrLocale } from 'ngx-bootstrap/locale';
 import { ToastrService } from 'ngx-toastr';
+import { FileslistFormatter } from 'tslint/lib/formatters';
 defineLocale('pt-br', ptBrLocale);
 
 @Component({
@@ -27,8 +28,9 @@ export class EventosComponent implements OnInit {
   mostrarImagem = false;
   registerForm: FormGroup | any;
   bodyDeletarEvento = '';
+  file: File;
   dataEvento: string;
-  
+
   _filtroLista: string = '';
   
   constructor(
@@ -57,6 +59,7 @@ export class EventosComponent implements OnInit {
     editarEvento(evento: Evento, template: any) {
       this.modoSalvar = 'put';
       this.openModal(template);
+      this.evento.imagemURL = '';
       this.evento = Object.assign({}, evento);
       this.registerForm.patchValue(evento)
     }
@@ -114,12 +117,27 @@ export class EventosComponent implements OnInit {
             email: ['', [Validators.required, Validators.email,]]
           });
         }
+
+        onFileChange(event: any) {
+          const reader = new FileReader();
+
+          if (event.target.files && event.target.files.length){
+            this.file = event.target.files;
+            console.log(this.file);
+          }
+        }
         
         salvarAlteracao(template: any) {
           if(!this.registerForm.valid) return;
             
           if (this.modoSalvar === 'post') {
             this.evento = Object.assign({}, this.registerForm.value);
+
+            this.eventoService.postUpload(this.file).subscribe();
+
+            const nomeArquivo = this.evento.imagemURL.split('\\', 3);
+            this.evento.imagemURL = nomeArquivo[2];
+
             this.eventoService.postEvento(this.evento)
               .subscribe(novoEvento => {
                 console.log(novoEvento);
@@ -134,6 +152,8 @@ export class EventosComponent implements OnInit {
             console.log('Evento: ', this.evento);
             this.evento = Object.assign({id: this.evento.id}, this.registerForm.value);
             console.log('Evento depois: ', this.evento);
+
+            this.eventoService.postUpload(this.file).subscribe();
 
             this.eventoService.putEvento(this.evento).subscribe(
               novoEvento => {
