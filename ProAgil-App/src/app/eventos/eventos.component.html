@@ -40,7 +40,7 @@
     <tr *ngFor="let evento of eventosFiltrados">
       <td>
         <img *ngIf="mostrarImagem"
-        src="http://localhost:5000/resources/Images/{{evento.imagemURL}}"
+          src="http://localhost:5000/resources/Images/{{evento.imagemURL}}"
         [style.width.px]="imagemLargura"
         [style.margin.px]="imagemMargem"/>
       </td>
@@ -158,14 +158,14 @@ role="dialog" aria-labelledby="dialog-sizes-name1">
           <button class="btn btn-success" (click)="file.click()">
             Enviar Imagem
           </button>
-          <input type="file" #file [ngClass]="{'is-invalid': registerForm.get('imagemURL').errors 
-&& registerForm.get('imagemURL').touched}" (change)="onFileChange($event)" class="form-control is-invalid"
+          <input type="file" #file [ngClass]="{'is-invalid': registerForm.get('imagemURL')?.errors 
+&& registerForm.get('imagemURL')?.touched}" (change)="onFileChange($event)" class="form-control is-invalid"
             formControlName="imagemURL" placeholder="" style="display: none">
         </td>
       </tr>
     </table>
-    <div *ngIf="registerForm.get('imagemURL').hasError('required')
-&& registerForm.get('imagemURL').touched" class="invalid-feedback">
+    <div *ngIf="registerForm.get('imagemURL')?.hasError('required')
+&& registerForm.get('imagemURL')?.touched" class="invalid-feedback">
       Imagem é obrigatório.
     </div>
   </div>
