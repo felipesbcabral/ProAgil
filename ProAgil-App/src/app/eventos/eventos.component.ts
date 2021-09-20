@@ -29,7 +29,9 @@ export class EventosComponent implements OnInit {
   registerForm: FormGroup;
   bodyDeletarEvento = '';
   file: File;
+  fileNameToUpdate: string;
   dataEvento: string;
+  dataAtual: string;
 
   _filtroLista: string = '';
   
@@ -47,11 +49,11 @@ export class EventosComponent implements OnInit {
 
   editarEvento(evento: Evento, template: any) {
     this.modoSalvar = 'put';
-    this.evento = Object.assign({}, evento);
-    this.evento.imagemURL = ''
     this.openModal(template);
-    console.log(evento);
-    this.registerForm.patchValue(evento)
+    this.evento = Object.assign({}, evento);
+    this.fileNameToUpdate = evento.imagemURL.toString();
+    this.evento.imagemURL = ''
+    this.registerForm.patchValue(this.evento)
   }
     
   novoEvento(template: any) {
@@ -109,15 +111,37 @@ export class EventosComponent implements OnInit {
     }
   }
         
+  uploadImagem() {
+    if(this.modoSalvar === 'post'){
+    const nomeArquivo = this.evento.imagemURL.split('\\', 3);
+    this.evento.imagemURL = nomeArquivo[2];
+
+    this.eventoService.postUpload(this.file, nomeArquivo[2])
+    .subscribe(
+      () => {
+        this.dataAtual = new Date().getMilliseconds().toString();
+        this.getEventos();
+      }
+    );
+  } else {
+    this.evento.imagemURL = this.fileNameToUpdate;
+    this.eventoService.postUpload(this.file, this.fileNameToUpdate)
+    .subscribe(
+      () => {
+        this.dataAtual = new Date().getMilliseconds().toString();
+        this.getEventos();
+      }
+    );
+  }
+}
+  
   salvarAlteracao(template: any) {
     if(!this.registerForm.valid) return;
       
     if (this.modoSalvar === 'post') {
       this.evento = Object.assign({}, this.registerForm.value);
 
-      const nomeArquivo = this.evento.imagemURL.split('\\', 3);
-      this.evento.imagemURL = nomeArquivo[2];
-      this.eventoService.postUpload(this.file, nomeArquivo[2]).subscribe();
+      this.uploadImagem();
 
       this.eventoService.postEvento(this.evento)
         .subscribe(novoEvento => {
@@ -131,10 +155,7 @@ export class EventosComponent implements OnInit {
       this.evento = Object.assign({id: this.evento.id}, this.registerForm.value);
       console.log('Evento depois: ', this.evento);
 
-      const nomeArquivo = this.evento.imagemURL.split('\\', 3);
-      this.evento.imagemURL = nomeArquivo[2];
-
-      this.eventoService.postUpload(this.file, nomeArquivo[2 ]).subscribe();
+      this.uploadImagem();
 
       this.eventoService.putEvento(this.evento).subscribe(
         novoEvento => {
